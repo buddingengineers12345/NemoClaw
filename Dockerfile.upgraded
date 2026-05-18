@@ -1,0 +1,80 @@
+# =============================================================================
+# BASE IMAGE
+# =============================================================================
+
+FROM ghcr.io/nvidia/nemoclaw/sandbox-base:latest
+
+
+# =============================================================================
+# CLAUDE CODE
+# Install globally and clean up install artifacts in a single layer.
+# Runs as root (already active after DAC protection blocks above).
+# =============================================================================
+
+RUN curl -fsSL https://claude.ai/install.sh -o /tmp/install.sh \
+    && bash /tmp/install.sh \
+    && cp "$(readlink -f /root/.local/bin/claude)" /usr/local/bin/claude \
+    && chmod 755 /usr/local/bin/claude \
+    && test -x /usr/local/bin/claude \
+    && rm -rf /tmp/install.sh \
+              /root/.local \
+              /root/.cache \
+              /root/.npm \
+              /root/.claude \
+              /root/.claude.json
+
+
+# =============================================================================
+# UV — PYTHON PACKAGE MANAGER
+# No venv or Python management; project venvs are created on demand
+# under /tmp by the sandbox user.
+# =============================================================================
+
+COPY --from=ghcr.io/astral-sh/uv:0.10.8 /uv /usr/local/bin/uv
+
+ENV UV_LINK_MODE=copy \
+    UV_CACHE_DIR=/tmp/uv/cache \
+    UV_TOOL_DIR=/opt/uv/tools \
+    UV_TOOL_BIN_DIR=/usr/local/bin
+
+# Baked tools — entry points land in /usr/local/bin, venvs in /opt/uv/tools
+RUN uv tool install copier
+
+
+# =============================================================================
+# SANDBOX USER — CLAUDE CONFIG
+# Create Claude config dir under sandbox user for correct ownership.
+# Subdirectories (cache, downloads, projects, etc.) are created by
+# Claude Code on first run — no need to pre-create them here.
+# =============================================================================
+
+USER sandbox
+
+RUN mkdir -p /sandbox/.claude \
+    && chmod 700 /sandbox/.claude \
+    && echo '{}' > /sandbox/.claude.json \
+    && chmod 600 /sandbox/.claude.json
+
+# Restore root — entrypoint must run as root to fork the gateway process.
+USER root
+
+
+# =============================================================================
+# USAGE EXAMPLES
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# UV — Package Management (inside a project venv)
+# All writes go to /tmp, keeping the image layer clean.
+# -----------------------------------------------------------------------------
+#
+#   cd /tmp/myproject
+#   uv add numpy pandas     # resolves, downloads via /tmp/uv/cache,
+#                           # installs into .venv
+
+# -----------------------------------------------------------------------------
+# Copier — Project Scaffolding
+# Baked tool; call directly with no PATH changes needed.
+# -----------------------------------------------------------------------------
+#
+#   copier copy gh:someorg/template /tmp/myproject
