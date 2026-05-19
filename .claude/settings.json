@@ -5,5 +5,45 @@
         "AGENTMEMORY_TEAM_ID": "nemoclaw"
       }
     }
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node /home/engineer/.npm-global/lib/node_modules/@agentmemory/agentmemory/dist/hooks/session-start.mjs"
+          }
+        ],
+        "description": "AgentMemory: register session and inject prior context"
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node /home/engineer/.npm-global/lib/node_modules/@agentmemory/agentmemory/dist/hooks/stop.mjs",
+            "async": true,
+            "timeout": 10
+          }
+        ],
+        "description": "AgentMemory: flush session observations on stop"
+      }
+    ],
+    "PreCompact": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node /home/engineer/.npm-global/lib/node_modules/@agentmemory/agentmemory/dist/hooks/pre-compact.mjs"
+          }
+        ],
+        "description": "AgentMemory: preserve context before compaction"
+      }
+    ]
   }
 }

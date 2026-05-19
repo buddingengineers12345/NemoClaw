@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "agentmemory": {
+      "type": "local",
+      "command": "npx",
+      "args": ["-y", "@agentmemory/mcp"],
+      "tools": ["*"],
+      "env": {
+        "AGENTMEMORY_TEAM_ID": "nemoclaw",
+        "AGENTMEMORY_URL": "http://localhost:3111",
+        "AGENTMEMORY_TOOLS": "all"
+      }
+    }
+  }
+}
