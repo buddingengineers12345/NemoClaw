@@ -13,7 +13,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node /home/engineer/.npm-global/lib/node_modules/@agentmemory/agentmemory/dist/hooks/session-start.mjs"
+            "command": "bash /home/engineer/.agentmemory/hooks/scoped-hook.sh session-start"
           }
         ],
         "description": "AgentMemory: register session and inject prior context"
@@ -25,7 +25,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node /home/engineer/.npm-global/lib/node_modules/@agentmemory/agentmemory/dist/hooks/stop.mjs",
+            "command": "bash /home/engineer/.agentmemory/hooks/scoped-hook.sh stop",
             "async": true,
             "timeout": 10
           }
@@ -39,7 +39,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node /home/engineer/.npm-global/lib/node_modules/@agentmemory/agentmemory/dist/hooks/pre-compact.mjs"
+            "command": "bash /home/engineer/.agentmemory/hooks/scoped-hook.sh pre-compact"
           }
         ],
         "description": "AgentMemory: preserve context before compaction"
