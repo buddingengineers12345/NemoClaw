@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "agentmemory": {
+      "env": {
+        "AGENTMEMORY_TEAM_ID": "nemoclaw"
+      }
+    }
+  }
+}
