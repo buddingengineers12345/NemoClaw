@@ -1,0 +1,3 @@
+skill_name,repo_url,sparse_patterns,version_strategy,pinned_version,local_package_name,local_package_manager,skills_dest_subdir,skills_source_subdir,cron_schedule,last_sha,last_synced,status,notes
+nemoclaw,https://github.com/NVIDIA/NemoClaw.git,/.agents/skills/nemoclaw-user-*/** /.agents/skills/nemoclaw-skills-guide/**,tag,v0.0.24,,,,.agents/skills,,347f772cbf433f8f0345dc73b3649216db57182a,2026-04-24T16:39:58Z,ok,NemoClaw agent skills - pinned to v0.0.24
+openshell-cli,https://github.com/NVIDIA/OpenShell.git,/.agents/skills/openshell-cli/**,tag,v0.0.36,,,,.agents/skills,,4483c860e0f2567880fa6dc8d0f90e0bcd7a5140,2026-04-24T18:12:13Z,ok,OpenShell CLI skill - pinned to v0.0.36
